@@ -14,13 +14,42 @@
         <h1 class="display-3">Weather Dashboard</h1>
         <p id="current-time"></p>
         <p>search for a city - view the current weather</p>
-        <form id="serach-form">
+        <form id="search-form">
             <label for="search-bar" id="error"></label>
             <input class="col-4" aria-label="Search by city" id="search-bar" placeholder="Search by city...">
             <button type="search" id="search-btn" class="btn">Search</button>
         </form>
+        <div class="alert alert-warning alert-dismissable fade" role="alert" id="error-msg"></div>
         
       </header>
+
+      <main class="container">
+         
+
+          <div id="search-history">
+              Recent Searches:
+          </div>
+
+        <!--displays name of searched city-->
+          <div id="results"></div>
+
+          <!--dynamically adding the searched city's current weather here-->
+          <div id="current-forecast" class="card invisible">
+              <div id="img-container">
+
+              </div>
+          </div>
+
+          <div id="forecast-header" class="invisible">
+              <h4>5-day forecast</h4>
+          </div>
+
+          <!--shows the searched city's 5-day forecast-->
+          <div id="future-forecast" class="row">
+
+          </div>
+
+      </main>
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
