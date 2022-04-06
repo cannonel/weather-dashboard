@@ -186,8 +186,15 @@ function displayForecast(forecasts) {
         var foreHigh = document.createElement("h5");
         foreHigh.textContent = "High: " + roundNum(forecasts[i].temp.max);
         forecastObj.appendChild(foreHigh);
+        var foreWind = document.createElement("h5");
+        foreWind.textContent = "Windspeed: " + roundNum(forecasts[i].wind_speed) + "mph";
+        forecastObj.appendChild(foreWind);
+        var foreHum = document.createElement("h5");
+        foreHum.textContent = "Humdity: " + roundNum(forecasts[i].humidity) + "%";
+        forecastObj.appendChild(foreHum);
         futureForecastEl.appendChild(forecastObj);
       }
+
       $("#forecast-1").text("Tomorrow");
       $("#forecast-2").text(forecastDate2);
       $("#forecast-3").text(forecastDate3);
