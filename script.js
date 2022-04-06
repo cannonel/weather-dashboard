@@ -7,16 +7,21 @@ var imgContainer = document.querySelector("#img-container");
 var searchHistory = document.querySelector("#search-history");
 
 //5 day forecast
-var forecastDay2 = moment().add(1, "days").format("MMM D");
-var forecastDay3 = moment().add(2, "days").format("MMM D");
-var forecastDay4 = moment().add(3, "days").format("MMM D");
-var forecastDay5 = moment().add(4, "days").format("MMM D");
+var forecastDate2 = moment().add(1, "days").format("MMM D");
+var forecastDate3 = moment().add(2, "days").format("MMM D");
+var forecastDate4 = moment().add(3, "days").format("MMM D");
+var forecastDate5 = moment().add(4, "days").format("MMM D");
 
 //current date
 var currentTime = moment().format("dddd, MMMM Do");
 $("#current-time").text(currentTime);
 
 var userInput = [];
+
+//rounds numbys
+function roundNum(num) {
+    return Math.floor(num);
+}
 
 //los functiones
 searchBtn.addEventListener("click", function (event) {
@@ -103,7 +108,7 @@ function displayCurrent(weather, city, state) {
     searchResultsEl.textContent = "";
     imgContainer.textContent = "";
     $("#search-bar").val("");
-    $("current-forecast").removeClass("invisible");
+    $("#current-forecast").removeClass("invisible");
 
     //show current weather for search
     var cityStateEl = document.createElement("h3");
@@ -113,7 +118,7 @@ function displayCurrent(weather, city, state) {
     searchResultsEl.appendChild(cityStateEl);
 
     var currentImg = document.createElement("img");
-    currentImg.setAttribute("src", "https://openweather.org/img/wn" + weather.weather[0].icon + ".png");
+    currentImg.setAttribute("src", "https://openweathermap.org/img/wn/" + weather.weather[0].icon + ".png");
     imgContainer.appendChild(currentImg);
     currentForecastEl.appendChild(imgContainer);
 
@@ -126,18 +131,22 @@ function displayCurrent(weather, city, state) {
   var currentTempEl = document.createElement("h4");
   currentTempEl.textContent = "Temp: " + roundNum(weather.temp) + "\u00B0 F";
   currentForecastEl.appendChild(currentTempEl);
-  // FEEL
-  var currentFeelEl = document.createElement("h4");
-  currentFeelEl.textContent =
-    "Feels like: " + roundNum(weather.feels_like) + "\u00B0 F";
-  currentForecastEl.appendChild(currentFeelEl);
+
+  // winds-peed
+  var currentWindEl = document.createElement("h4");
+  currentWindEl.textContent =
+    "Windspeed: " + roundNum(weather.wind_speed) + "mph";
+  currentForecastEl.appendChild(currentWindEl);
+
   // HUMIDITY
   var currentHumidEl = document.createElement("h4");
   currentHumidEl.textContent = "Humidity: " + weather.humidity + "%";
   currentForecastEl.appendChild(currentHumidEl);
+
   // UVI
   var currentUviEl = document.createElement("h4");
   currentUviEl.textContent = "UV Index: " + weather.uvi;
+
   // add color classes
   if (weather.uvi <= 2) {
       currentUviEl.classList = "green"
@@ -154,8 +163,61 @@ function displayCurrent(weather, city, state) {
   currentForecastEl.appendChild(currentUviEl);
 }
 
+function displayForecast(forecasts) {
+    //clear out old
+    futureForecastEl.textContent = "";
+    $("#forecast-header").removeClass("invisible");
+    for (var i = 1; i <= 5; i++) {
+        // create elements for each forecast object
+        var forecastObj = document.createElement("div");
+        forecastObj.classList = "card card-small";
+        var foreDate = document.createElement("h4");
+        foreDate.setAttribute("id", "forecast-" + i);
+        forecastObj.appendChild(foreDate);
+        var foreImg = document.createElement("img");
+        foreImg.setAttribute("src", "https://openweathermap.org/img/wn/" + forecasts[i].weather[0].icon + ".png");
+        forecastObj.appendChild(foreImg);
+        var foreHeader = document.createElement("h4");
+        foreHeader.textContent = forecasts[i].weather[0].main;
+        forecastObj.appendChild(foreHeader);
+        var foreLow = document.createElement("h5");
+        foreLow.textContent = "Low: " + roundNum(forecasts[i].temp.min);
+        forecastObj.appendChild(foreLow);
+        var foreHigh = document.createElement("h5");
+        foreHigh.textContent = "High: " + roundNum(forecasts[i].temp.max);
+        forecastObj.appendChild(foreHigh);
+        futureForecastEl.appendChild(forecastObj);
+      }
+      $("#forecast-1").text("Tomorrow");
+      $("#forecast-2").text(forecastDate2);
+      $("#forecast-3").text(forecastDate3);
+      $("#forecast-4").text(forecastDate4);
+      $("#forecast-5").text(forecastDate5);
+    }
+    //  find search history in local storage
+    function loadHistoryBtns(queries) {
+      queries = JSON.parse(localStorage.getItem("queries"));
+      // if nothing
+      if (queries === null) {
+        console.log("nothing in storage");
+      }
+      // function to create buttons
+      else {
+        for (var i = 0; i < queries.length; i++) {
+          // create history buttons
+          var newBtn = document.createElement("button");
+          newBtn.textContent = queries[i];
+          newBtn.classList = "btn";
+          // newBtn.setAttribute("id", searchQuery)
+          searchHistory.appendChild(newBtn);
+        }
+      }
+    };
+    loadHistoryBtns();
+    $(".btn").on("click", function() {
+      var searchQuery = $(this).text();
+      console.log(searchQuery);
+      getCityData(searchQuery)
+    })
 
-//load past searches
-function loadHistoryBtns() {
 
-};
