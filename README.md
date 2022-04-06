@@ -15,6 +15,6 @@ This site is geared towards traverlers and tourists alike that want to view key 
 
 ## Website
 
-<img src= "./images/screenshot-weatherdboard.jpeg"></img>
+<img src= "./images/screenshot-weatherdboard.jpg"></img>
 
 https://cannonel.github.io/weather-dashboard/
